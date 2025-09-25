@@ -13,7 +13,7 @@
 
   <script>
     const clientId = 'bmX64qqTAuyTRc8Z8E3jflcCii1mIrka';
-    const redirectUri = 'http://localhost:3000'; // Local server redirect URI
+    const redirectUri = 'https://ecobee.onrender.com/'; // Local server redirect URI
 
     document.getElementById('ecobee-signin-button').onclick = function () {
       const ecobeeAuthUrl = `https://api.ecobee.com/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=&state=1`;
