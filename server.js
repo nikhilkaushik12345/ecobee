@@ -7,7 +7,7 @@ const app = express();
 const PORT = 3000;
 
 const clientId = 'bmX64qqTAuyTRc8Z8E3jflcCii1mIrka';
-const redirectUri = 'http://localhost:3000';
+const redirectUri = 'https://ecobee.onrender.com/';
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -46,3 +46,4 @@ app.post('/get-token', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+
