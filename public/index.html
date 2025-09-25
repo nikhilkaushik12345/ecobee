@@ -1,0 +1,56 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ecobee Sign-In</title>
+</head>
+<body>
+  <h1>Login with Ecobee</h1>
+  <button id="ecobee-signin-button">Sign in with Ecobee</button>
+  <pre id="response-output"></pre>
+
+  <script>
+    const clientId = 'bmX64qqTAuyTRc8Z8E3jflcCii1mIrka';
+    const redirectUri = 'http://localhost:3000'; // Local server redirect URI
+
+    document.getElementById('ecobee-signin-button').onclick = function () {
+      const ecobeeAuthUrl = `https://api.ecobee.com/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=&state=1`;
+      window.location.href = ecobeeAuthUrl;
+    };
+
+    function extractCodeFromUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('code');
+    }
+
+    async function getEcobeeToken(authCode) {
+      try {
+        const response = await fetch('/get-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ code: authCode })
+        });
+
+        const data = await response.json();
+        document.getElementById('response-output').textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('response-output').textContent = JSON.stringify({ error: error.message }, null, 2);
+      }
+    }
+
+    window.onload = async function () {
+      const authCode = extractCodeFromUrl();
+
+      if (authCode) {
+        await getEcobeeToken(authCode);
+      } else {
+        document.getElementById('response-output').textContent = 'No code found in URL.';
+      }
+    };
+  </script>
+</body>
+</html>
